@@ -17,6 +17,8 @@ public class GameEventSystem : MonoBehaviour
     public static event UIEvent UI_SettingsValueChange;
 
     public static event UIEvent UI_CustomButtonPress;
+    public static event UIEvent UI_CustomNumberBoxUpdate;
+    public static event UIEvent UI_CustomConfirm;
 
     public static void UI_OnLoaded()
     {
@@ -57,6 +59,14 @@ public class GameEventSystem : MonoBehaviour
     public static void UI_OnCustomButtonPress()
     {
         UI_CustomButtonPress?.Invoke();
+    }
+    public static void UI_OnCustomNumberBoxUpdate()
+    {
+        UI_CustomNumberBoxUpdate?.Invoke();
+    }
+    public static void UI_OnCustomConfirm()
+    {
+        UI_CustomConfirm?.Invoke();
     }
     #endregion
 

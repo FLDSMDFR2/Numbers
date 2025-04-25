@@ -28,15 +28,29 @@ public class UI_HeaderBar : MonoBehaviour
         SeedText.enabled = false;
         PuzzleCompleteText.enabled = false;
 
-        if (type != MapType.Challenge && type != MapType.GOTD) return;
+        //if (type != MapType.Challenge && type != MapType.GOTD && type != MapType.Custom) return;
 
         PuzzleCompleteText.text = "";
         LevelText.enabled = false;
         SeedText.enabled = false;
         PuzzleCompleteText.enabled = true;
 
-        if (type == MapType.Challenge) PuzzleCompleteText.text = PuzzlesPerLevel.GetLevelByCompletedPuzzles(GameData.PuzzlesCompleted) + " - " + PuzzlesPerLevel.GetPuzzlesCompletedWithinLevel(GameData.PuzzlesCompleted);
-        else if (type == MapType.GOTD && GameData.LastGOTDCompleted.Date == DateTime.Now.Date) PuzzleCompleteText.text = "COMPLETE";
-
+        if (type == MapType.Challenge)
+        {
+            PuzzleCompleteText.text = PuzzlesPerLevel.GetLevelByCompletedPuzzles(GameData.PuzzlesCompleted) + " - " + PuzzlesPerLevel.GetPuzzlesCompletedWithinLevel(GameData.PuzzlesCompleted);
+        }
+        else if (type == MapType.GOTD && GameData.LastGOTDCompleted.Date == DateTime.Now.Date)
+        {
+            PuzzleCompleteText.text = "COMPLETE";
+        }
+        else if (type == MapType.Custom)
+        {
+            if (CustomValues.Level > 0 ) PuzzleCompleteText.text = CustomValues.Level + " - " + "\u221E";
+            else PuzzleCompleteText.text = "CUSTOM";
+        }
+        else if (type == MapType.Basic)
+        {
+            PuzzleCompleteText.text = "\u221E";
+        }
     }
 }

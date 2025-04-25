@@ -19,6 +19,7 @@ public class UI_MainController : MonoBehaviour
         GameEventSystem.UI_SettingsCloseButtonPress += GameEventSystem_UI_SettingsCloseButtonPress;
         GameEventSystem.UI_HomeButtonPress += GameEventSystem_UI_HomeButtonPress;
         GameEventSystem.UI_CustomButtonPress += GameEventSystem_UI_CustomButtonPress;
+        GameEventSystem.UI_CustomConfirm += GameEventSystem_UI_CustomConfirm;
     }
 
     protected virtual void Start()
@@ -55,12 +56,14 @@ public class UI_MainController : MonoBehaviour
         UpdateDisplay();
     }
 
-    protected virtual void ShowGameDisplay()
+    protected virtual void ShowGameDisplay(MapType mapType)
     {
         if (displayStates.ContainsKey(MainDisplay)) displayStates[MainDisplay] = false;
         if (displayStates.ContainsKey(GameDisplay)) displayStates[GameDisplay] = true;
         if (displayStates.ContainsKey(SettingDisplay)) displayStates[SettingDisplay] = false;
-        if (displayStates.ContainsKey(CustomDisplay)) displayStates[CustomDisplay] = false;
+
+        if (displayStates.ContainsKey(CustomDisplay) && mapType == MapType.Custom) displayStates[CustomDisplay] = true;
+        else if (displayStates.ContainsKey(CustomDisplay)) displayStates[CustomDisplay] = false;
         UpdateDisplay();
     }
 
@@ -94,7 +97,7 @@ public class UI_MainController : MonoBehaviour
     #region Event Handlers
     protected virtual void GameEventSystem_Game_Start(MapType mapType)
     {
-        ShowGameDisplay();
+        ShowGameDisplay(mapType);
     }
     protected virtual void GameEventSystem_UI_SettingsButtonPress()
     {
@@ -111,6 +114,10 @@ public class UI_MainController : MonoBehaviour
     protected virtual void GameEventSystem_UI_CustomButtonPress()
     {
         ShowCustomDisplay();
+    }
+    protected virtual void GameEventSystem_UI_CustomConfirm()
+    {
+        HideSettingsDisplay();
     }
     #endregion
 

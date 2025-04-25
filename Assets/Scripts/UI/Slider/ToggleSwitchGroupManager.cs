@@ -1,22 +1,33 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ToggleSwitchGroupManager : MonoBehaviour
 {
+    [Serializable]
+    public class ToggleGroupDtls
+    {
+        public ToggleSwitch Toggle;
+        public int GroupNumber;
+    }
+
     [Header("Start Value")]
     public ToggleSwitch InitialToggleSwitch;
 
     [Header("Toggle Options")]
     public bool AllCanBeToggleOff;
+    public bool AllCanBeToggleOn;
+    public bool CanMultipleGroupsBeToggleOn; 
 
-    public List<ToggleSwitch> ToggleSwitches = new List<ToggleSwitch>();
+
+    public List<ToggleGroupDtls> ToggleSwitches = new List<ToggleGroupDtls>();
 
     protected virtual void Awake()
     {
-        var switched = GetComponentsInChildren<ToggleSwitch>();
-        foreach (var ts in switched)
+        foreach (var ts in ToggleSwitches)
         {
-            RegisterToggleButtonToGroup(ts);
+            RegisterToggleButtonToGroup(ts.Toggle);
         }
     }
 
@@ -25,7 +36,7 @@ public class ToggleSwitchGroupManager : MonoBehaviour
         var areAllToggledOff = true;
         foreach(var ts in ToggleSwitches)
         {
-            if (!ts.CurrentValue) continue;
+            if (!ts.Toggle.CurrentValue) continue;
 
             areAllToggledOff = false;
             break;
@@ -36,17 +47,13 @@ public class ToggleSwitchGroupManager : MonoBehaviour
         if (InitialToggleSwitch != null)
             InitialToggleSwitch.ToggleByGroupManager(true);
         else if (ToggleSwitches.Count > 0)
-            ToggleSwitches[0].ToggleByGroupManager(true);
+            ToggleSwitches[0].Toggle.ToggleByGroupManager(true);
 
     }
 
     protected virtual void RegisterToggleButtonToGroup(ToggleSwitch toggleSwitch)
     {
         toggleSwitch.SetupForToggleManager(this);
-
-        if (ToggleSwitches.Contains(toggleSwitch)) return;
-
-        ToggleSwitches.Add(toggleSwitch);
      }
 
 
@@ -54,35 +61,49 @@ public class ToggleSwitchGroupManager : MonoBehaviour
     {
         if (ToggleSwitches == null || ToggleSwitches.Count <= 1) return;
 
-        if (AllCanBeToggleOff && toggleSwitch.CurrentValue)
+        if ((AllCanBeToggleOff && toggleSwitch.CurrentValue) ||
+            (AllCanBeToggleOn && !toggleSwitch.CurrentValue))
         {
             toggleSwitch.ToggleByGroupManager(!toggleSwitch.CurrentValue);
         }
-        else if (!AllCanBeToggleOff && toggleSwitch.CurrentValue)
+        else if (!CanMultipleGroupsBeToggleOn && !toggleSwitch.CurrentValue)
         {
+            var group = ToggleSwitches.First(x => x.Toggle == toggleSwitch);
+
+            if (group == null) 
+            {
+                DefaultToggle(toggleSwitch);
+                return;
+            }
+
             var currentValue = toggleSwitch.CurrentValue;
             foreach (var ts in ToggleSwitches)
             {
-                if (ts == null) continue;
+                if (ts == null || ts.Toggle == null) continue;
 
-                if (ts == toggleSwitch)
-                    ts.ToggleByGroupManager(!currentValue);
-                else
-                    ts.ToggleByGroupManager(currentValue);
+                if (ts.Toggle == toggleSwitch)
+                    ts.Toggle.ToggleByGroupManager(!currentValue);
+                else if (group.GroupNumber != ts.GroupNumber)
+                    ts.Toggle.ToggleByGroupManager(currentValue);
             }
         }
         else
         {
-            var currentValue = toggleSwitch.CurrentValue;
-            foreach (var ts in ToggleSwitches)
-            {
-                if (ts == null) continue;
+            DefaultToggle(toggleSwitch);
+        }
+    }
 
-                if (ts == toggleSwitch)
-                    ts.ToggleByGroupManager(!currentValue);
-                else
-                    ts.ToggleByGroupManager(currentValue);
-            }
+    protected virtual void DefaultToggle(ToggleSwitch toggleSwitch)
+    {
+        var currentValue = toggleSwitch.CurrentValue;
+        foreach (var ts in ToggleSwitches)
+        {
+            if (ts == null || ts.Toggle == null) continue;
+
+            if (ts.Toggle == toggleSwitch)
+                ts.Toggle.ToggleByGroupManager(!currentValue);
+            else
+                ts.Toggle.ToggleByGroupManager(currentValue);
         }
     }
 }
