@@ -34,8 +34,8 @@ public class UI_GameControls : MonoBehaviour
         }
         else
         {
-            FillerButton.SetActive(false);
-            CompleteButton.SetActive(true);
+            FillerButton.SetActive(true);
+            CompleteButton.SetActive(false);
             CustomButton.SetActive(false);
         }
     }

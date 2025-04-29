@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 
 public class CustomConfirm : MonoBehaviour

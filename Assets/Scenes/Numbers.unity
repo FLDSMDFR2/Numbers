@@ -7828,7 +7828,7 @@ MonoBehaviour:
     LevelIncrease: 0
     LevelOffset: 0
     StartLevel: 0
-  - Enabled: 0
+  - Enabled: 1
     TileType: 3
     BaseMin: 4
     MinCap: 4
@@ -7837,7 +7837,7 @@ MonoBehaviour:
     LevelIncrease: 0
     LevelOffset: 0
     StartLevel: 0
-  - Enabled: 0
+  - Enabled: 1
     TileType: 4
     BaseMin: 4
     MinCap: 4
