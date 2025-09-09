@@ -45,7 +45,8 @@ public class UI_HeaderBar : MonoBehaviour
         }
         else if (type == MapType.Custom)
         {
-            if (CustomValues.Level > 0 ) PuzzleCompleteText.text = CustomValues.Level + " - " + "\u221E";
+            if (CustomValues.Level > 0 && CustomValues.Puzzle <= 0) PuzzleCompleteText.text = CustomValues.Level + " - " + "\u221E";
+            else if (CustomValues.Level > 0) PuzzleCompleteText.text = CustomValues.Level + " - " + CustomValues.Puzzle;
             else PuzzleCompleteText.text = "CUSTOM";
         }
         else if (type == MapType.Basic)

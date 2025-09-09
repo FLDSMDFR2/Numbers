@@ -7,6 +7,7 @@ public class CustomConfirm : MonoBehaviour
     [Header("Level")]
     public ToggleSwitch LevelToggle;
     public SettingsNumberBox LevelInput;
+    public SettingsNumberBox PuzzleInput;
 
     [Header("By Type")]
     public ToggleSwitch SquareToggle;
@@ -49,6 +50,7 @@ public class CustomConfirm : MonoBehaviour
         if (LevelToggle.CurrentValue)
         {
             CustomValues.Level = LevelInput.NumberBoxValue;
+            CustomValues.Puzzle = PuzzleInput.NumberBoxValue;
         }
         else
         {
@@ -97,6 +99,16 @@ public class CustomConfirm : MonoBehaviour
             else
             {
                 LevelInput.InputFieldValue.targetGraphic.color = defaultColor;
+            }
+
+            if (PuzzleInput.NumberBoxValue > PuzzlesPerLevel.GetMaxPuzzleCountForLevel(LevelInput.NumberBoxValue))
+            {
+                PuzzleInput.InputFieldValue.targetGraphic.color = ErrorColor;
+                allValid = false;
+            }
+            else
+            {
+                PuzzleInput.InputFieldValue.targetGraphic.color = defaultColor;
             }
 
             return;

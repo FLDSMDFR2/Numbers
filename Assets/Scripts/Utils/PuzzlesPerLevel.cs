@@ -14,10 +14,21 @@ public class PuzzlesPerLevel : MonoBehaviour
     [SerializeField]
     public List<PuzzlesPerLevelDtls> PuzzlesPerLevelMap = new List<PuzzlesPerLevelDtls> ();
     protected static List<PuzzlesPerLevelDtls> puzzlesPerLevelMap = new List<PuzzlesPerLevelDtls>();
+    protected static Dictionary<int,int> levelToPuzzleCount = new Dictionary<int, int>();
 
     protected virtual void Awake()
     {
         puzzlesPerLevelMap.AddRange(PuzzlesPerLevelMap);
+
+        var level = 0;
+        foreach(var map in puzzlesPerLevelMap)
+        {
+            for (int i = 0; i < map.Levels; i++)
+            {
+                level++;
+                levelToPuzzleCount[level] = map.PuzzleCount;
+            }
+        }
     }
 
 
@@ -57,6 +68,26 @@ public class PuzzlesPerLevel : MonoBehaviour
         }
 
         return completedPuzzles - count;
+    }
+
+    public static long GetMaxPuzzleCountForLevel(int level)
+    {
+        if (levelToPuzzleCount.ContainsKey(level)) return levelToPuzzleCount[level];
+
+        return 0;
+    }
+
+    public static long GetTotalNumberComplete(int level, int Puzzle)
+    {
+        var puzzleCount = 0;
+        for(int i = 1; i < level; i++)
+        {
+            puzzleCount += levelToPuzzleCount[i];
+        }
+
+        puzzleCount += Puzzle;
+
+        return puzzleCount;
     }
 
 }

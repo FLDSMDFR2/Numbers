@@ -156,7 +156,8 @@ public class Map : MonoBehaviour
             }
             else
             {
-                if (PuzzleNumber <= 0) PuzzleNumber = RandomGenerator.UnseededRange(0, int.MaxValue / 2);
+                if (CustomValues.Level > 0 && CustomValues.Puzzle > 0) PuzzleNumber = (int)(Seed + PuzzlesPerLevel.GetTotalNumberComplete(CustomValues.Level, CustomValues.Puzzle));
+                else if (PuzzleNumber <= 0) PuzzleNumber = RandomGenerator.UnseededRange(0, int.MaxValue / 2);
                 else PuzzleNumber++;
             }
         }

@@ -2,6 +2,7 @@
 public class CustomValues
 {
     public static int Level = -1;
+    public static int Puzzle = -1;
     public static bool Square = false;
     public static int MaxSquare = -1;
     public static int MinSquare = -1;
@@ -18,6 +19,7 @@ public class CustomValues
     public static void ResetValues()
     {
         Level = -1;
+        Puzzle = -1;
         Square = false;
         MaxSquare = -1;
         MinSquare = -1;

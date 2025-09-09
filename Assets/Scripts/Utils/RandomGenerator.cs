@@ -40,7 +40,7 @@ public class RandomGenerator : MonoBehaviour
     }
 
     /// <summary>
-    /// Seeded value between Min (inclusive) Max (Exclusive)
+    /// Seeded value between Min (inclusive) Max (inclusive)
     /// </summary>
     /// <param name="Min"></param>
     /// <param name="Max"></param>
@@ -51,7 +51,7 @@ public class RandomGenerator : MonoBehaviour
     }
 
     /// <summary>
-    /// Seeded value between Min (inclusive) Max (Exclusive)
+    /// Seeded value between Min (inclusive) Max (inclusive)
     /// </summary>
     /// <param name="Min"></param>
     /// <param name="Max"></param>
